@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_PASSWORD=password
+      - PGDATA=/tmp
+    ports:
+      - "5432:5432"
+    container_name: cards_db
+  web:
+    image: cards
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
+      - PYTHONUNBUFFERED=1
+      - SECRET_KEY=whatever-secret-key
+    build: ./cards-server-app
+    command: ["./cards-server-app/start.sh"]
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    container_name: cards_web
+    depends_on:
+      - db

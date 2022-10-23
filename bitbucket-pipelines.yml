@@ -1,0 +1,56 @@
+image: python:3.8
+definitions:
+  services:
+    postgres:
+      image: postgres
+      variables:
+        POSTGRES_DB: "circle_test"
+        POSTGRES_USER: "ubuntu"
+        POSTGRES_PASSWORD: "test"
+  steps:
+    - step: &install-build
+        name: Install & Test
+        caches:
+          - pip
+        script:
+          - export DJANGO_SETTINGS_MODULE=config.settings.test
+          - export PYTHONUNBUFFERED=1
+          - export SECRET_KEY=TEST_DJANGO_SECRET_KEY
+          - cd cards-server-app
+          - python3 -m venv venv
+          - . venv/bin/activate
+          - pip install -r requirements.txt
+          - coverage erase
+          - coverage run --rcfile=.coveragerc manage.py test
+          - coverage html
+          - git archive --output=./application.tar.gz --format=tar HEAD .
+        artifacts:
+          - coverage_html
+          - application.tar.gz
+        services:
+          - postgres
+    - step: &deploy
+        name: Default Deploy
+        script:
+          - pipe: atlassian/heroku-deploy:1.1.3
+            variables:
+              HEROKU_API_KEY: $HEROKU_API_KEY
+              HEROKU_APP_NAME: $HEROKU_APP_NAME
+              ZIP_FILE: "application.tar.gz"
+pipelines:
+  branches:
+    master:
+      - step: *install-build
+    staging:
+      - step: *install-build
+      - step:
+          <<: *deploy
+          name: Deploy to staging
+          deployment: staging
+
+    production:
+      - step: *install-build
+      - step:
+          <<: *deploy
+          name: Deploy to production
+          deployment: production
