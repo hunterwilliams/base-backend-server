@@ -7,7 +7,7 @@ class UserManager(BaseUserManager):
 
     def _is_valid_role(self, role):
         roles = [self.SUPERUSER, self.STAFF]
-        return role.lower() in roles
+        return role is None or role.lower() in roles
 
     def _create_user(self, email, password, **extra_fields):
         """
@@ -22,12 +22,13 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password, role=None, **extra_fields):
-        role = role.lower()
-        if not self._is_valid_role(role):
-            raise ValueError(f'Role "{role}" is not valid.')
-        extra_fields.setdefault(f"is_{role}", True)
-        if extra_fields.get(f"is_{role}") is not True:
-            raise ValueError(f"{role.capitalize()} must have is_{role}=True.")
+        if role is not None:
+            role = role.lower()
+            if not self._is_valid_role(role):
+                raise ValueError(f'Role "{role}" is not valid.')
+            extra_fields.setdefault(f"is_{role}", True)
+            if extra_fields.get(f"is_{role}") is not True:
+                raise ValueError(f"{role.capitalize()} must have is_{role}=True.")
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):

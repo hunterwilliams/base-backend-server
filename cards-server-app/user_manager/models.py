@@ -34,6 +34,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.is_superuser
 
+    def get_profile(self):
+        try:
+            if self.profile:
+                return self.profile
+        except:
+            return None
+
     def __str__(self):
         return self.email
 
