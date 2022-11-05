@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY ./cards-server-app/requirements.txt ./
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-COPY ./cards-server .
+COPY ./cards-server-app ./
 
 RUN chmod +755 start.sh
 
