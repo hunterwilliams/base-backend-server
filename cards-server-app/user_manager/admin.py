@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
+from import_export.admin import ImportMixin, ImportExportModelAdmin
+from import_export import resources
+
 from user_manager.forms import (
     UserAdminCreationForm,
     UserAdminChangeForm,
@@ -10,7 +13,7 @@ from user_manager.models import User, Profile
 from config.helpers import model_admin_url
 
 
-class UserAdminView(BaseUserAdmin):
+class UserAdminView(ImportMixin, BaseUserAdmin):
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
 
@@ -42,12 +45,20 @@ class UserAdminView(BaseUserAdmin):
     filter_horizontal = ()
 
 
-class ProfileAdminView(admin.ModelAdmin):
+class ProfileResource(resources.ModelResource):
+    class Meta:
+        model = Profile
+        use_natural_foreign_keys = True
+
+
+class ProfileAdminView(ImportExportModelAdmin):
     model = Profile
     list_display = ("__str__", "user_link", "first_name", "last_name")
 
     search_fields = ("user__email", "first_name", "last_name")
     autocomplete_fields = ["user"]
+
+    resource_classes = [ProfileResource]
 
     def user_link(self, obj):
         return model_admin_url(obj.user)

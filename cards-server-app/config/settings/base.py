@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "drf_yasg",
+    "import_export",
     "health_check",  # required
     "health_check.db",  # stock Django health checkers
     "health_check.cache",
