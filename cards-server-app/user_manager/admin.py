@@ -14,11 +14,7 @@ class UserAdminView(BaseUserAdmin):
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
 
-    list_display = (
-        "email",
-        "is_superuser",
-        "is_active",
-    )
+    list_display = ("email", "is_superuser", "is_active", "last_login")
     list_filter = ("is_superuser", "is_active")
     readonly_fields = (
         "id",
