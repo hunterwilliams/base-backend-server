@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "drf_yasg",
     "health_check",  # required
     "health_check.db",  # stock Django health checkers
     "health_check.cache",
