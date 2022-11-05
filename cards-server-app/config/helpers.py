@@ -33,8 +33,10 @@ class BaseTestCase(APITestCase):
     def given_url(self, url):
         self.url = url
 
-    def given_a_new_user(self, email="someemail@divertise.asia", role=None):
-        return User.objects.create_user(email, password="irrelevant", role=role)
+    def given_a_new_user(
+        self, email="someemail@divertise.asia", password="irrelevant", role=None
+    ):
+        return User.objects.create_user(email, password=password, role=role)
 
     def given_logged_in_as_user(self, user):
         self.current_user = user
@@ -87,6 +89,9 @@ class BaseTestCase(APITestCase):
 
     def assertResponseBadRequest(self):
         self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def assertResponseNotAuthorized(self):
+        self.assertEqual(self.response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def assertResponseForbidden(self):
         self.assertEqual(self.response.status_code, status.HTTP_403_FORBIDDEN)

@@ -17,6 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from rest_framework import routers
+
+
+from user_manager.views import (
+    AuthViewSetV1,
+)
 
 
 def trigger_error(request):
@@ -31,6 +37,9 @@ api_v1 = get_schema_view(
     ),
 )
 
+router_v1 = routers.DefaultRouter()
+router_v1.register(r"auth", AuthViewSetV1, basename="auth")
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(
@@ -38,6 +47,7 @@ urlpatterns = [
         api_v1.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
+    path("v1/", include((router_v1.urls, "api"), namespace="v1")),
     path("trigger_error/", trigger_error),
     path("ht/", include("health_check.urls")),
 ]
