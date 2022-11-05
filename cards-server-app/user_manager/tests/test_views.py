@@ -110,3 +110,83 @@ class TestAuthViews(BaseTestCase):
             self.response_json["non_field_errors"], ["Password is incorrect."]
         )
         print(">> test_login_wrong_pass_fails: OK <<")
+
+    def test_change_password_success(self):
+        user = self.given_a_new_user(email=self.user_email, password=self.user_password)
+        self.given_logged_in_as_user(user)
+        self.given_url(reverse("v1:auth-change-password"))
+
+        self.when_user_posts(
+            {
+                "confirm_password": self.user_email,
+                "new_password": self.user_email,
+                "old_password": self.user_password,
+            }
+        )
+        self.assertResponseSuccess()
+        print(">> test_change_password_success: OK <<")
+
+    def test_change_password_is_bad_request_when_wrong_password(self):
+        user = self.given_a_new_user(email=self.user_email, password=self.user_password)
+        self.given_logged_in_as_user(user)
+        self.given_url(reverse("v1:auth-change-password"))
+
+        self.when_user_posts_and_gets_json(
+            {
+                "confirm_password": self.user_email,
+                "new_password": self.user_email,
+                "old_password": self.user_password + "a",
+            }
+        )
+        self.assertResponseBadRequest()
+        self.assertIn("non_field_errors", self.response_json)
+        self.assertEquals(
+            ["Your old password is incorrect."],
+            self.response_json["non_field_errors"],
+        )
+        print(">> test_change_password_is_bad_request_when_wrong_password: OK <<")
+
+    def test_change_password_is_bad_request_when_passwords_do_not_match(self):
+        user = self.given_a_new_user(email=self.user_email, password=self.user_password)
+        self.given_logged_in_as_user(user)
+        self.given_url(reverse("v1:auth-change-password"))
+
+        self.when_user_posts_and_gets_json(
+            {
+                "confirm_password": self.user_email,
+                "new_password": self.user_email + "a",
+                "old_password": self.user_password,
+            }
+        )
+        self.assertResponseBadRequest()
+        self.assertIn("non_field_errors", self.response_json)
+        self.assertEquals(
+            ["New password and confirm password do not match."],
+            self.response_json["non_field_errors"],
+        )
+        print(
+            ">> test_change_password_is_bad_request_when_passwords_do_not_match: OK <<"
+        )
+
+    def test_change_password_fails_when_password_fails_validator(self):
+        user = self.given_a_new_user(email=self.user_email, password=self.user_password)
+        self.given_logged_in_as_user(user)
+        self.given_url(reverse("v1:auth-change-password"))
+
+        self.when_user_posts_and_gets_json(
+            {
+                "confirm_password": "a",
+                "new_password": "a",
+                "old_password": self.user_password,
+            }
+        )
+        self.assertResponseBadRequest()
+        self.assertIn("non_field_errors", self.response_json)
+        self.assertEquals(
+            [
+                "This password is too short. It must contain at least 8 characters.",
+                "This password is too common.",
+            ],
+            self.response_json["non_field_errors"],
+        )
+        print(">> test_change_password_fails_when_password_fails_validator: OK <<")

@@ -58,7 +58,7 @@ class BaseTestCase(APITestCase):
         self.response_json = self.response.json()
         return self.response_json
 
-    def when_user_posts_and_gets_json(self, data):
+    def when_user_posts(self, data):
         if self.query_params is not None:
             r = {
                 "QUERY_STRING": urlencode(self.query_params, doseq=True),
@@ -66,6 +66,9 @@ class BaseTestCase(APITestCase):
             self.response = self.client.post(self.url, data, format="json", **r)
         else:
             self.response = self.client.post(self.url, data, format="json")
+
+    def when_user_posts_and_gets_json(self, data):
+        self.when_user_posts(data)
         self.response_json = self.response.json()
         return self.response_json
 
