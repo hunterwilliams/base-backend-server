@@ -46,7 +46,7 @@ urlpatterns = [
         api_v1.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path("v1/", include((router_v1.urls, "api"), namespace="v1")),
+    path("api/v1/", include((router_v1.urls, "api"), namespace="v1")),
     path("trigger_error/", trigger_error),
     path("ht/", include("health_check.urls")),
 ]
