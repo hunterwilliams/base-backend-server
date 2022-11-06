@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from django.contrib.auth import password_validation
-from user_manager.models import User
+from user_manager.models import User, Profile
 
 
 class LoginSerializer(serializers.Serializer):
@@ -60,3 +60,41 @@ class ChangePasswordSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source="user.email")
+
+    class Meta:
+        model = Profile
+        exclude = ("user",)
+
+    def update_email_for_user(self, user, email):
+        if user.email.casefold() != email.casefold():
+            if User.objects.filter(email__iexact=email).exists():
+                raise serializers.ValidationError(
+                    {
+                        "non_field_errors": [
+                            "This email is already being used for another account."
+                        ]
+                    }
+                )
+            user.email = email
+            user.save()
+
+    def create(self, validated_data):
+        user_data = validated_data.pop("user")
+
+        new_profile = validated_data
+        new_profile["user"] = self.context["user"]
+        self.update_email_for_user(self.context["user"], user_data["email"])
+        instance = super().create(validated_data)
+        return instance
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user")
+        user = instance.user
+        self.update_email_for_user(user, user_data["email"])
+
+        instance = super().update(instance, validated_data)
+        return instance

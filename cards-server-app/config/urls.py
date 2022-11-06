@@ -20,9 +20,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import routers
 
 
-from user_manager.views import (
-    AuthViewSetV1,
-)
+from user_manager.views import AuthViewSetV1, ProfileViewSetV1
 
 
 def trigger_error(request):
@@ -39,6 +37,7 @@ api_v1 = get_schema_view(
 
 router_v1 = routers.DefaultRouter()
 router_v1.register(r"auth", AuthViewSetV1, basename="auth")
+router_v1.register(r"profile", ProfileViewSetV1, basename="profile")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

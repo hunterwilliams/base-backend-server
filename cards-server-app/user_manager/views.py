@@ -6,7 +6,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from django.contrib.auth.models import update_last_login
 
-from user_manager.serializers import LoginSerializer, ChangePasswordSerializer
+from user_manager.serializers import (
+    LoginSerializer,
+    ChangePasswordSerializer,
+    ProfileSerializer,
+)
 
 
 class AuthViewSetV1(viewsets.GenericViewSet):
@@ -56,3 +60,28 @@ class AuthViewSetV1(viewsets.GenericViewSet):
             user.save()
             return Response(status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProfileViewSetV1(viewsets.GenericViewSet):
+    permission_classes = (IsAuthenticated,)
+
+    @action(methods=["GET", "PUT"], detail=False, serializer_class=ProfileSerializer)
+    def me(self, request):
+        """
+        Get or update the current requesting user's profile
+        ---
+        """
+        if request.method == "PUT":
+            serializer = self.get_serializer(
+                request.user.get_profile(),
+                data=request.data,
+                context={"user": request.user},
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            serializer = self.get_serializer(request.user.get_profile())
+            return_data = serializer.data
+            if return_data["email"] == "":
+                return_data["email"] = request.user.email
+            return Response(return_data, status=status.HTTP_200_OK)

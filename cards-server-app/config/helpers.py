@@ -6,7 +6,7 @@ from django.utils.safestring import SafeText
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.utils.html import format_html
 
-from user_manager.models import User
+from user_manager.models import User, Profile
 
 
 def model_admin_url(obj, name: str = None) -> str:
@@ -38,6 +38,11 @@ class BaseTestCase(APITestCase):
     ):
         return User.objects.create_user(email, password=password, role=role)
 
+    def given_a_profile_for_user(self, user, first_name="Test", last_name="Smith"):
+        return Profile.objects.create(
+            user=user, first_name=first_name, last_name=last_name
+        )
+
     def given_logged_in_as_user(self, user):
         self.current_user = user
         self.client.force_login(user)
@@ -47,7 +52,7 @@ class BaseTestCase(APITestCase):
         self.response_json = self.response.json()
         return self.response_json
 
-    def when_user_updates_and_gets_json(self, data):
+    def when_user_puts_and_gets_json(self, data):
         if self.query_params is not None:
             r = {
                 "QUERY_STRING": urlencode(self.query_params, doseq=True),
@@ -94,9 +99,15 @@ class BaseTestCase(APITestCase):
         self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def assertResponseNotAuthorized(self):
+        """
+        The response is 401 Unauthorized
+        """
         self.assertEqual(self.response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def assertResponseForbidden(self):
+        """
+        The response is 403 Forbidden
+        """
         self.assertEqual(self.response.status_code, status.HTTP_403_FORBIDDEN)
 
     def assertResponseNotFound(self):
