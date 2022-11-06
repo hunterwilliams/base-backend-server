@@ -10,11 +10,23 @@ from user_manager.serializers import (
     LoginSerializer,
     ChangePasswordSerializer,
     ProfileSerializer,
+    RegistrationSerializer,
 )
 
 
 class AuthViewSetV1(viewsets.GenericViewSet):
     permission_classes = (AllowAny,)
+
+    @action(methods=["POST"], detail=False, serializer_class=RegistrationSerializer)
+    def register(self, request):
+        """
+        New user registration.
+        ---
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(methods=["POST"], detail=False, serializer_class=LoginSerializer)
     def login(self, request):
