@@ -13,7 +13,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     id = models.UUIDField(_("ID"), primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(_("email address"), unique=True)
-    # photo = models.ImageField()
     joined_date = models.DateTimeField(_("joined date"), auto_now_add=True)
     is_active = models.BooleanField(_("active status"), default=True)
 
