@@ -90,6 +90,9 @@ class BaseTestCase(APITestCase):
         self.assertEqual(self.response.status_code, status.HTTP_200_OK)
 
     def assertResponseCreated(self):
+        """
+        The response is 201 Created
+        """
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
     def assertResponseDeleteSuccess(self):

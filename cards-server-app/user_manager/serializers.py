@@ -63,7 +63,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(source="user.email")
+    email = serializers.EmailField(source="user.email", required=False)
 
     class Meta:
         model = Profile
@@ -83,11 +83,16 @@ class ProfileSerializer(serializers.ModelSerializer):
             user.save()
 
     def create(self, validated_data):
-        user_data = validated_data.pop("user")
+        has_email_set = False
+        if "user" in validated_data:
+            has_email_set = True
+            user_data = validated_data.pop("user")
 
         new_profile = validated_data
         new_profile["user"] = self.context["user"]
-        self.update_email_for_user(self.context["user"], user_data["email"])
+
+        if has_email_set:
+            self.update_email_for_user(self.context["user"], user_data["email"])
         instance = super().create(validated_data)
         return instance
 
@@ -98,3 +103,49 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         instance = super().update(instance, validated_data)
         return instance
+
+
+class RegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, style={"input_type": "password"})
+    confirm_password = serializers.CharField(
+        write_only=True, style={"input_type": "password"}
+    )
+    profile = ProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ("email", "profile", "password", "confirm_password")
+
+    @staticmethod
+    def validate_email(value):
+        if User.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError("This email is already registered.")
+        return value.lower()
+
+    def validate(self, data):
+        password_validation.validate_password(data.get("password"), self.instance)
+
+        if not data.get("password") or not data.get("confirm_password"):
+            raise serializers.ValidationError(
+                {"non_field_errors": ["Please enter a password and confirm it."]}
+            )
+
+        if data.get("password") != data.pop("confirm_password"):
+            raise serializers.ValidationError(
+                {"non_field_errors": ["Passwords do not match."]}
+            )
+
+        return data
+
+    def create(self, validated_data):
+        profile_data = validated_data.pop("profile")
+        if "user" in profile_data:
+            profile_data.pop("user")  # otherwise this can overwrite email
+
+        instance = super().create(validated_data)
+        ps = ProfileSerializer(context={"user": instance})
+        ps.create(profile_data)
+        return instance
+
+    def update(self, instance, validated_date):
+        pass
