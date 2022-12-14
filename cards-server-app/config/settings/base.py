@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     "health_check.db",  # stock Django health checkers
     "health_check.cache",
     "health_check.storage",
+    "django_rest_passwordreset",
     "corsheaders",
+    "config",
     "user_manager",
 ]
 
@@ -134,3 +136,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+FRONTEND_URL = "http://localhost:8080"
+DEFAULT_FROM_EMAIL = "support@divertise.asia"
