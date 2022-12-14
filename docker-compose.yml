@@ -1,5 +1,12 @@
 version: '3'
 services:
+  mailcatcher:
+    restart: on-failure
+    build: ./mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+    container_name: mailcatcher
   db:
     image: postgres:14
     environment:
@@ -24,3 +31,4 @@ services:
     container_name: cards_web
     depends_on:
       - db
+      - mailcatcher
