@@ -139,3 +139,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 FRONTEND_URL = "http://localhost:8080"
 DEFAULT_FROM_EMAIL = "support@divertise.asia"
+SUPER_ADMIN_PASS = os.environ.get("SUPER_ADMIN_PASS")
