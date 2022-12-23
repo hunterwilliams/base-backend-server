@@ -2,6 +2,8 @@ from .base import *
 
 DEBUG = True
 
+SECRET_KEY = "django-insecure-pc&dqbfctn1@-rl3@s813bo(id*%rtl#zsg6trq(vp4^6@ae#!"
+
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 
