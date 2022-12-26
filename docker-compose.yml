@@ -16,16 +16,15 @@ services:
       - "5432:5432"
     container_name: cards_db
   web:
-    image: cards
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.dev
       - PYTHONUNBUFFERED=1
       - SECRET_KEY=whatever-secret-key
     build: 
-      context: cards-server-app
-    command: ["./cards-server-app/start.sh"]
+      context: ./cards-server-app
+    command: [ "./start.sh" ]
     volumes:
-      - .:/usr/src/app
+      - ./cards-server-app:/usr/src/app
     ports:
       - "8000:8000"
     container_name: cards_web
