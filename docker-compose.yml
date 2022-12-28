@@ -20,6 +20,8 @@ services:
       - DJANGO_SETTINGS_MODULE=config.settings.dev
       - PYTHONUNBUFFERED=1
       - SECRET_KEY=whatever-secret-key
+      - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=764014389491-9th4rsc7enljdq998gonnvj3s0j2965t.apps.googleusercontent.com
+      - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=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
     build: 
       context: ./cards-server-app
     command: [ "./start.sh" ]
