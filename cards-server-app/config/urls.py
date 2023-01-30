@@ -19,7 +19,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import routers
 
-
+from demo_manager.urls import urlpatterns as demo_manager_urls
 from user_manager.views import AuthViewSetV1, ProfileViewSetV1
 
 
@@ -60,4 +60,4 @@ urlpatterns = [
     ),
     path("trigger_error/", trigger_error),
     path("ht/", include("health_check.urls")),
-]
+] + demo_manager_urls  # for demo_manager can remove

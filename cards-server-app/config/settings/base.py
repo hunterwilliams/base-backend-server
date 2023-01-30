@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     "rest_social_auth",  # required for Frontend social auth; if server only can remove
     "config",
     "user_manager",
+    "demo_manager",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
