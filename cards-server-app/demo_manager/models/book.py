@@ -17,6 +17,7 @@ class Author(models.Model):
 
 class Book(models.Model):
     id = models.UUIDField(_("ID"), primary_key=True, default=uuid.uuid4, editable=False)
+    isbn = models.CharField(_("ISBN: The International Standard Book Number"), max_length=255, blank=True)
     title = models.CharField(_("Title"), max_length=255)
     authors = models.ManyToManyField(Author, blank=False, related_name="books")
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
@@ -26,9 +27,21 @@ class Book(models.Model):
         verbose_name_plural = _("books")
         ordering = ["title"]
 
-    @property
-    def author_names(self):
-        return ", ".join(list(self.authors.all().values_list('name', flat=True)))
+    def __str__(self):
+        return self.title
+
+
+class BookWithIndex(models.Model):
+    id = models.UUIDField(_("ID"), primary_key=True, default=uuid.uuid4, editable=False)
+    isbn = models.CharField(_("ISBN: The International Standard Book Number"), max_length=255, blank=True)
+    title = models.CharField(_("Title"), max_length=255, db_index=True)
+    authors = models.ManyToManyField(Author, blank=False, related_name="books_w_index")
+    created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("book with index")
+        verbose_name_plural = _("books with index")
+        ordering = ["title"]
 
     def __str__(self):
-        return f"{self.title} - {self.author_names}"
+        return self.title
