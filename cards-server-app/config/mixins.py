@@ -1,8 +1,33 @@
-from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.admin.views.main import ChangeList
 from django.utils.translation import gettext_lazy as _
-
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
+
+
+class EagerLoadingViewSetMixin:
+    """
+        Eager Loading ViewSet Mixin
+        ---
+        - Override `get_queryset` of Rest Framework View Set class
+            - call `serializer.setup_eager_loading` to pre-fecth and select related
+            - required function `serializer.setup_eager_loading`
+        - examples:
+            - BookViewSetV1: demo_manager/views/book.py
+                - BookSerializer:  demo_manager/serializers/book.py
+    """
+
+    def get_queryset(self):
+        serializer = self.get_serializer_class()
+        if not hasattr(serializer, "setup_eager_loading"):
+            raise NotImplementedError(
+                "{} is missing function setup_eager_loading.".format(
+                    serializer.__name__
+                )
+            )
+        _queryset = self.queryset
+        _queryset = serializer.setup_eager_loading(_queryset)
+        return _queryset
 
 
 class DefaultPagination(PageNumberPagination):
@@ -73,3 +98,38 @@ class PaginationListViewSetMixin:
             self._paginator = None
 
         return super().list(request, args, kwargs)
+
+
+class PaginationWithEagerLoadingViewSetMixin(EagerLoadingViewSetMixin, PaginationListViewSetMixin):
+    """
+    Pagination with Eager Loading ViewSet Mixin
+    """
+
+
+# Admin
+class EagerLoadingChangeList(ChangeList):
+    def get_queryset(self, changelist_request):
+        queryset = super().get_queryset(changelist_request)
+        queryset = self.model_admin.setup_eager_loading(queryset)
+        return queryset
+
+
+class EagerLoadingAdminChangeListMixin:
+    """
+    EagerLoadingAdminChangeListMixin
+    ---
+    Catching model queryset to display OneToOne, ManyToOne, ManyToMany related in list_display without several hit database
+    ---
+    examples:
+        BookAdminView: demo_manager/admin/book.py
+        ProfileAdminView: user_manager/admin.py
+    """
+    def setup_eager_loading(self, queryset):
+        raise NotImplementedError(
+            "{} is missing function setup_eager_loading.".format(
+                self.__class__.__name__
+            )
+        )
+
+    def get_changelist(self, request, **kwargs):
+        return EagerLoadingChangeList
