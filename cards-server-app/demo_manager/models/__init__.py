@@ -1,1 +1,2 @@
-from .book import Book, Author
+from .book import Author, Book, BookWithIndex
+from .storage import UserBookStorage

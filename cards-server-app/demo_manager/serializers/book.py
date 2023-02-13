@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import Book
+from ..models import Book, BookWithIndex
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -8,4 +8,18 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ("id", "title", "authors", "created_at")
+        fields = ("id", "isbn", "title", "authors", "created_at")
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ Perform necessary eager loading of data. """
+        # select_related for "one-to-one" "many-to-one" relationships
+        # prefetch_related for "to-many" relationships
+        queryset = queryset.prefetch_related('authors')
+        return queryset
+
+
+class BookWithIndexSerializer(BookSerializer):
+    class Meta:
+        model = BookWithIndex
+        fields = ("id", "isbn", "title", "authors", "created_at")
