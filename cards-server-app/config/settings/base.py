@@ -59,7 +59,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "config.middleware.SlowAPIAlertMiddleware",  # slow API response alert need to add before the CommonMiddleware
+    "config.middleware.slow_api.SlowAPIAlertMiddleware",  # slow API response alert need to add before the CommonMiddleware
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
