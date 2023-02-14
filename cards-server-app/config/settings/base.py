@@ -61,6 +61,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # CorsMiddleware must be places before other middleware that can generate responses,
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "config.middleware.healthcheck.HealthCheckMiddleware",  # healthcheck middleware need to add before CommonMiddleware
     "config.middleware.slow_api.SlowAPIAlertMiddleware",  # slow API response alert need to add before the CommonMiddleware
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
