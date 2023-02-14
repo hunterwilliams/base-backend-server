@@ -62,6 +62,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "config.middleware.healthcheck.HealthCheckMiddleware",  # healthcheck middleware need to add before CommonMiddleware
+    "config.middleware.slow_api.SlowAPIAlertMiddleware",  # slow API response alert need to add before the CommonMiddleware
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -166,3 +167,8 @@ SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
+
+# Slow API Alert Middleware
+SLOW_API_ALERT_NAMESPACES = ["demo", "v1", "rest_framework", "social", "password_reset"]
+SLOW_API_ALERT_AT_MS = 30000  # will alert when request take time >= 30 secs
