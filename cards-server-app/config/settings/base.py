@@ -167,6 +167,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
 SCOPE = ["openid", "email", "https://www.googleapis.com/auth/userinfo.profile"]  # scopes should be matched to frontend
 
+# Social Google Auth auto create Profile
+SOCIAL_AUTH_AUTO_CREATE_PROFILE = True
+
 
 # Slow API Alert Middleware
 SLOW_API_ALERT_NAMESPACES = ["demo", "v1", "rest_framework", "social", "password_reset"]
