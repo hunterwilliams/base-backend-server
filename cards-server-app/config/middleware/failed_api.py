@@ -53,7 +53,7 @@ class FailedAPIAlertMiddleware:
             },
             "sent_from": request.get_host()
         }
-        
+
         # send a signal that api failed alert has triggered
         # let whoever receives this signal handle alert method
         failed_api_alert_triggered.send(
@@ -64,7 +64,6 @@ class FailedAPIAlertMiddleware:
         # Code to be executed for each request before
         # the view (and later middleware) are called.
         if not self.is_api_alert_request(request):
-            print(f">>> not in namespaces: {request.path}")
             return self.get_response(request)
 
         # store request.body to avoid error
