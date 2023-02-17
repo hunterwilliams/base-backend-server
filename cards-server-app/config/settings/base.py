@@ -172,3 +172,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SEC
 # Slow API Alert Middleware
 SLOW_API_ALERT_NAMESPACES = ["demo", "v1", "rest_framework", "social", "password_reset"]
 SLOW_API_ALERT_AT_MS = 30000  # will alert when request take time >= 30 secs
+
+# Failed API Alert Middleware
+FAILED_API_ALERT_NAMESPACES = SLOW_API_ALERT_NAMESPACES
+FAILED_API_ALERT_STATUS_CODES = [400]
