@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import logging
+
 from pathlib import Path
 import os
 
@@ -172,24 +172,3 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SEC
 # Slow API Alert Middleware
 SLOW_API_ALERT_NAMESPACES = ["demo", "v1", "rest_framework", "social", "password_reset"]
 SLOW_API_ALERT_AT_MS = 30000  # will alert when request take time >= 30 secs
-
-
-LOGGING = {
-    'version': 1,  # dict config format version
-    'disable_existing_loggers': False,  # retain the defaults loggers
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
-    },
-    "loggers": {
-        "setting_warnings": {
-            "level": "WARNING"
-        }
-    }
-}
-
