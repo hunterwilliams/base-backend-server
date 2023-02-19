@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -131,7 +130,6 @@ REST_FRAMEWORK = {
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -148,7 +146,6 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_URL = "rest_framework:logout"
 LOGOUT_REDIRECT_URL = "/admin"
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_ROOT = "static"
@@ -163,11 +160,17 @@ FRONTEND_URL = "http://localhost:8080"
 DEFAULT_FROM_EMAIL = "support@divertise.asia"
 SUPER_ADMIN_PASS = os.environ.get("SUPER_ADMIN_PASS")
 
+# Social Auth Config
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
+# Social Google Auth Config
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+SCOPE = ["openid", "email", "https://www.googleapis.com/auth/userinfo.profile"]  # scopes should be matched to frontend
 
+# Social Google Auth auto create Profile
+SOCIAL_AUTH_AUTO_CREATE_PROFILE = True
+SOCIAL_AUTH_AUTO_VERIFY_USER = True
 
 # Slow API Alert Middleware
 SLOW_API_ALERT_NAMESPACES = ["demo", "v1", "rest_framework", "social", "password_reset"]
