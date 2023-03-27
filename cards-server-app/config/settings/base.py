@@ -57,18 +57,18 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  # CorsMiddleware must be places before other middleware that can generate responses,
+    "corsheaders.middleware.CorsMiddleware",  # CorsMiddleware must be placed before other middleware that can generate responses,
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "config.middleware.healthcheck.HealthCheckMiddleware",  # healthcheck middleware need to add before CommonMiddleware
-    "config.middleware.slow_api.SlowAPIAlertMiddleware",  # slow API response alert need to add before the CommonMiddleware
+    "config.middleware.healthcheck.HealthCheckMiddleware",  # HealthCheckMiddleware must be placed before CommonMiddleware
+    "config.middleware.slow_api.SlowAPIAlertMiddleware",  # SlowAPIAlertMiddleware must be placed before the CommonMiddleware
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-
+    "config.middleware.failed_api.FailedAPIAlertMiddleware", # FailedAPIAlertMiddleware must be placed the bottom of other request middles
 ]
 
 AUTH_USER_MODEL = "user_manager.User"
@@ -175,3 +175,7 @@ SOCIAL_AUTH_AUTO_VERIFY_USER = True
 # Slow API Alert Middleware
 SLOW_API_ALERT_NAMESPACES = ["demo", "v1", "rest_framework", "social", "password_reset"]
 SLOW_API_ALERT_AT_MS = 30000  # will alert when request take time >= 30 secs
+
+# Failed API Alert Middleware
+FAILED_API_ALERT_NAMESPACES = SLOW_API_ALERT_NAMESPACES
+FAILED_API_ALERT_STATUS_CODES = [400]
