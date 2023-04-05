@@ -1,9 +1,12 @@
 from django.conf import settings
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
+from django.core.files import File
 from django.shortcuts import resolve_url
+from django.template.defaultfilters import filesizeformat
 from django.utils.html import format_html
 from django.utils.http import urlencode
 from django.utils.safestring import SafeText
+from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.test import APITestCase
 

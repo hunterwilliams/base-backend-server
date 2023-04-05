@@ -68,7 +68,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "config.middleware.failed_api.FailedAPIAlertMiddleware", # FailedAPIAlertMiddleware must be placed the bottom of other request middles
+    "config.middleware.failed_api.FailedAPIAlertMiddleware",  # FailedAPIAlertMiddleware must be placed the bottom of other request middles
 ]
 
 AUTH_USER_MODEL = "user_manager.User"
@@ -179,3 +179,7 @@ SLOW_API_ALERT_AT_MS = 30000  # will alert when request take time >= 30 secs
 # Failed API Alert Middleware
 FAILED_API_ALERT_NAMESPACES = SLOW_API_ALERT_NAMESPACES
 FAILED_API_ALERT_STATUS_CODES = [400]
+
+FILE_UPLOAD_HANDLERS = [
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler",
+]
