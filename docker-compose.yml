@@ -6,7 +6,7 @@ services:
     ports:
       - "1025:1025"
       - "1080:1080"
-    container_name: mailcatcher
+    container_name: cardsserver_mailcatcher
   db:
     image: postgres:14
     environment:
@@ -14,7 +14,7 @@ services:
       - PGDATA=/tmp
     ports:
       - "5432:5432"
-    container_name: cards_db
+    container_name: cardsserver_db
   web:
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.dev
@@ -29,7 +29,7 @@ services:
       - ./cards-server-app:/usr/src/app
     ports:
       - "8000:8000"
-    container_name: cards_web
+    container_name: cardsserver_web
     depends_on:
       - db
       - mailcatcher
