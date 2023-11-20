@@ -142,7 +142,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if "user" in profile_data:
             profile_data.pop("user")  # otherwise this can overwrite email
 
-        instance = super().create(validated_data)
+        instance = User.objects.create_user(
+            email=validated_data.get("email"), password=validated_data.get("password")
+        )
         ps = ProfileSerializer(context={"user": instance})
         ps.create(profile_data)
         return instance

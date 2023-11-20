@@ -211,6 +211,35 @@ class TestAuthViews(BaseTestCase):
         self.assertEquals(first_name, profile.first_name)
         self.assertEquals(last_name, profile.last_name)
 
+    def test_register_success_and_can_login_via_api(self):
+        first_name = "abc"
+        last_name = "xyz"
+        self.given_url(reverse("v1:auth-register"))
+
+        self.when_user_posts_and_gets_json(
+            {
+                "email": self.user_email,
+                "password": self.user_password,
+                "confirm_password": self.user_password,
+                "profile": {
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "email": "shouldnotbetheemail@gmail.com",
+                },
+            }
+        )
+        self.assertResponseCreated()
+
+        # login via API
+        self.given_url(reverse("v1:auth-login"))
+
+        self.when_user_posts_and_gets_json(
+            {"email": self.user_email, "password": self.user_password}
+        )
+
+        self.assertResponseSuccess()
+        self.assertIn("token", self.response_json)
+
     def test_register_mismatch_password_is_bad_request(self):
         first_name = "abc"
         last_name = "xyz"
