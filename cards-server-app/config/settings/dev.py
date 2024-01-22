@@ -29,16 +29,9 @@ if DEBUG:
     EMAIL_PORT = 1025
     EMAIL_USE_TLS = False
 
-SUPER_ADMIN_PASS = "cfb1234567q"
+SUPER_ADMIN_PASS = "basic1234567q"
 
-LOGGING = {
-    "version": 1,
-    "loggers": {
-        "django.db.backends": {
-            "level": "DEBUG"
-        }
-    }
-}
+LOGGING = {"version": 1, "loggers": {"django.db.backends": {"level": "DEBUG"}}}
 
 # for django-debug-toolbar
 if DEBUG:
