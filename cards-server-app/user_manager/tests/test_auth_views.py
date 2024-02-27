@@ -23,6 +23,17 @@ class TestAuthViews(BaseTestCase):
         self.assertResponseSuccess()
         self.assertIn("token", self.response_json)
 
+    def test_login_success_case_insensitive_returns_token(self):
+        self.given_a_new_user(email=self.user_email, password=self.user_password)
+        self.given_url(reverse("v1:auth-login"))
+
+        self.when_user_posts_and_gets_json(
+            {"email": self.user_email.upper(), "password": self.user_password}
+        )
+
+        self.assertResponseSuccess()
+        self.assertIn("token", self.response_json)
+
     def test_login_updates_last_login(self):
         user = self.given_a_new_user(email=self.user_email, password=self.user_password)
         self.assertIsNone(user.last_login)

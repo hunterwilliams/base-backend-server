@@ -1,12 +1,14 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, password_validation
 from rest_framework import serializers
-from django.contrib.auth import password_validation
-from user_manager.models import User, Profile
+from user_manager.models import Profile, User
 
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True, write_only=True)
     password = serializers.CharField(style={"input_type": "password"}, write_only=True)
+
+    def validate_email(self, value):
+        return value.lower()
 
     def validate(self, data):
         email = data.get("email")
