@@ -1,5 +1,5 @@
 """
-ASGI config for cards project.
+ASGI config for baseserver project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

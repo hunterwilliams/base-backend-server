@@ -17,5 +17,5 @@ CORS_ORIGIN_ALLOW_ALL = True
 db_dict = get_database_dict()
 DATABASES = {"default": db_dict}
 
-AWS_STORAGE_BUCKET_NAME = "cards-staging"
+AWS_STORAGE_BUCKET_NAME = "base-staging"
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME

@@ -1,5 +1,5 @@
 """
-WSGI config for cards project.
+WSGI config for baseserver project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

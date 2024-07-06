@@ -45,5 +45,5 @@ if all([origin in ["", "*"] for origin in CORS_ALLOWED_ORIGINS]):
 db_dict = get_database_dict()
 DATABASES = {"default": db_dict}
 
-AWS_STORAGE_BUCKET_NAME = "cards-prod"
+AWS_STORAGE_BUCKET_NAME = "base-prod"
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME

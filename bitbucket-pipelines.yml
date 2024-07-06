@@ -16,7 +16,7 @@ definitions:
           - export DJANGO_SETTINGS_MODULE=config.settings.test
           - export PYTHONUNBUFFERED=1
           - export SECRET_KEY=TEST_DJANGO_SECRET_KEY
-          - cd cards-server-app
+          - cd base-server-app
           - python3 -m venv venv
           - . venv/bin/activate
           - pip install -r requirements.txt
@@ -29,8 +29,8 @@ definitions:
           - apt -y install zip
           - zip -r codecoverage.zip htmlcov/
         artifacts:
-          - cards-server-app/codecoverage.zip
-          - cards-server-app/application.tar.gz
+          - base-server-app/codecoverage.zip
+          - base-server-app/application.tar.gz
         services:
           - postgres
     - step: &deployheroku
@@ -40,7 +40,7 @@ definitions:
             variables:
               HEROKU_API_KEY: $HEROKU_API_KEY
               HEROKU_APP_NAME: $HEROKU_APP_NAME
-              ZIP_FILE: "cards-server-app/application.tar.gz"
+              ZIP_FILE: "base-server-app/application.tar.gz"
     - step: &deployaws
         name: Deploy via AWS
         image: docker:latest
@@ -54,7 +54,7 @@ definitions:
           - aws configure set region ${AWS_DEFAULT_REGION}
           - $(aws ecr get-login --no-include-email --region "${AWS_DEFAULT_REGION}")
           - echo "Building image..."
-          - docker build -t ${REPOSITORY_URL}:latest ./cards-server-app
+          - docker build -t ${REPOSITORY_URL}:latest ./base-server-app
           - echo "Tagging image..."
           - docker tag ${REPOSITORY_URL}:latest ${REPOSITORY_URL}:${VERSION_TAG}
           - docker push ${REPOSITORY_URL}:latest

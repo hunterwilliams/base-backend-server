@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "Cards server production start!"
+echo "Base server production start!"
 python manage.py migrate
 python manage.py collectstatic --noinput
 python manage.py init_super_user

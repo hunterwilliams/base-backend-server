@@ -1,3 +1,4 @@
+from config.helpers import get_no_reply_email
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
@@ -5,8 +6,6 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django_rest_passwordreset.signals import reset_password_token_created
 from social_django.models import UserSocialAuth
-
-from config.helpers import get_no_reply_email
 from user_manager.models import Profile
 
 FRONTEND_URL = getattr(settings, "FRONTEND_URL", "")
@@ -46,7 +45,7 @@ def password_reset_token_created(
 
     msg = EmailMultiAlternatives(
         # title:
-        "Password Reset for {title}".format(title="Cards"),
+        "Password Reset for {title}".format(title="Base Server"),
         # message:
         email_plaintext_message,
         # from:
@@ -58,7 +57,9 @@ def password_reset_token_created(
     msg.send()
 
 
-@receiver(post_save, sender=UserSocialAuth, dispatch_uid="create_profile_for_google_auth")
+@receiver(
+    post_save, sender=UserSocialAuth, dispatch_uid="create_profile_for_google_auth"
+)
 def create_profile_for_google_auth(sender, instance, created, **kwargs):
     # social_django will request extra_data from google after UserSocialAuth has been created.
     # for google provider, if extra_data has "access_token" it does mean that request extra_data has been called.

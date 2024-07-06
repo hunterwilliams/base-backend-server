@@ -6,7 +6,7 @@ services:
     ports:
       - "1025:1025"
       - "1080:1080"
-    container_name: cardsserver_mailcatcher
+    container_name: baseserver_mailcatcher
   db:
     image: postgres:14
     environment:
@@ -14,7 +14,7 @@ services:
       - PGDATA=/tmp
     ports:
       - "5432:5432"
-    container_name: cardsserver_db
+    container_name: baseserver_db
   web:
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.dev
@@ -23,13 +23,13 @@ services:
       - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=764014389491-9th4rsc7enljdq998gonnvj3s0j2965t.apps.googleusercontent.com
       - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=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
     build: 
-      context: ./cards-server-app
+      context: ./base-server-app
     command: [ "./start.sh" ]
     volumes:
-      - ./cards-server-app:/usr/src/app
+      - ./base-server-app:/usr/src/app
     ports:
       - "8000:8000"
-    container_name: cardsserver_web
+    container_name: baseserver_web
     depends_on:
       - db
       - mailcatcher
