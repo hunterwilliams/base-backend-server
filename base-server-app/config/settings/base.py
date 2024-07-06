@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "config",
     "user_manager",
     "demo_manager",
+    "silk",
     "django_filters",
     "debug_toolbar",
 ]
@@ -63,6 +64,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "corsheaders.middleware.CorsMiddleware",  # CorsMiddleware must be placed before other middleware that can generate responses,
     "django.middleware.security.SecurityMiddleware",
+    "silk.middleware.SilkyMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "config.middleware.healthcheck.HealthCheckMiddleware",  # HealthCheckMiddleware must be placed before CommonMiddleware
     "config.middleware.slow_api.SlowAPIAlertMiddleware",  # SlowAPIAlertMiddleware must be placed before the CommonMiddleware

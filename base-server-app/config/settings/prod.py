@@ -47,3 +47,6 @@ DATABASES = {"default": db_dict}
 
 AWS_STORAGE_BUCKET_NAME = "base-prod"
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
+
+SILKY_AUTHENTICATION = True  # User must login
+SILKY_AUTHORISATION = True  # User must have permissions

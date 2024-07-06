@@ -65,6 +65,7 @@ urlpatterns = (
         path(
             "ht/detail/", include("health_check.urls", namespace="healthcheck_detail")
         ),
+        path("silk/", include("silk.urls", namespace="silk")),
         path("__debug__/", include("debug_toolbar.urls")),
         path("_pictures/", include("pictures.urls")),  # for django-pictures library
     ]
