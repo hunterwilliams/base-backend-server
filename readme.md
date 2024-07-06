@@ -1,6 +1,6 @@
 # Base Project
 
-This project can be used as a base project for a variety of Djagno server applications. It is provided as-is without any guarantee of support or bug-fixes.
+This project can be used as a base project for a variety of Django server applications. It is provided as-is without any guarantee of support or bug-fixes.
 
 # CustomImageField
 
