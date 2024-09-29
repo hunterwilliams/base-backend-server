@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
 ]  # TODO: Set ALLOWED_HOSTS to include domain
 ALLOWED_CIDR_NETS = ["10.0.0.0/16"]  # TODO: verify
 CORS_ALLOWED_ORIGINS = [
-    "https://test-basebackend-app-aaabd21444c1.herokuapp.com/"
+    "https://test-basebackend-app-aaabd21444c1.herokuapp.com"
 ]  # TODO: Set CORS_ALLOWED_ORIGINS or CORS_ALLOWED_ORIGIN_REGEXES
 
 if all([host in ["", "*"] for host in ALLOWED_HOSTS]):
