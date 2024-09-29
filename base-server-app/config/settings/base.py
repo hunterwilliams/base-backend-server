@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "config",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -51,7 +52,6 @@ INSTALLED_APPS = [
     "corsheaders",
     "social_django",
     "rest_social_auth",  # required for Frontend social auth; if server only can remove
-    "config",
     "user_manager",
     "demo_manager",
     "silk",

@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% load tz %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<div id="site-name" style="position:relative"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+{% block nav-global %}<div style="position: fixed; right: 10px; bottom: 5px; font-size: smaller; pointer-events: none;">Current time: {% now "Y-m-d H:i:s" %}</div>
+{% endblock %}
