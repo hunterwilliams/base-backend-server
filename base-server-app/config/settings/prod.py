@@ -25,10 +25,14 @@ USE_X_FORWARDED_HOST = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]  # TODO: Set ALLOWED_HOSTS to include domain
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "test-basebackend-app-aaabd21444c1.herokuapp.com",
+]  # TODO: Set ALLOWED_HOSTS to include domain
 ALLOWED_CIDR_NETS = ["10.0.0.0/16"]  # TODO: verify
 CORS_ALLOWED_ORIGINS = [
-    ""
+    "https://test-basebackend-app-aaabd21444c1.herokuapp.com/"
 ]  # TODO: Set CORS_ALLOWED_ORIGINS or CORS_ALLOWED_ORIGIN_REGEXES
 
 if all([host in ["", "*"] for host in ALLOWED_HOSTS]):
