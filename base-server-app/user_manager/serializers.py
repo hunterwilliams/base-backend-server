@@ -16,7 +16,7 @@ class LoginSerializer(serializers.Serializer):
 
         if email and password:
             try:
-                user = User.objects.get(email__iexact=email)
+                user = User.objects.get(email=email)
                 if not user.is_active:
                     raise serializers.ValidationError("This email is inactive.")
             except User.DoesNotExist:
